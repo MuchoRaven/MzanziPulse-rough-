@@ -28,7 +28,7 @@ cursor.execute('''
         phone_number, first_name, last_name, preferred_language,
         consent_data_processing, consent_credit_check, kyc_status
     ) VALUES (?, ?, ?, ?, ?, ?, ?)
-''', ('0821234567', 'Thandi', 'Molefe', 'zu', 1, 1, 'VERIFIED'))
+''', ('0821234567', 'Thandi', 'Molefe', 'Zulu', 1, 1, 'VERIFIED'))
 
 user_id = cursor.lastrowid
 print(f"✅ User created with ID: {user_id}")
