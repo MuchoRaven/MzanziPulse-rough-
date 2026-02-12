@@ -35,4 +35,4 @@ secrets.json
 
 # Huawei Cloud credentials
 credentials.json
-config.ini
+config.ini*.db
