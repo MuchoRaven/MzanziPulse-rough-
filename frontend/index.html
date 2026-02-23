@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MzansiPulse Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body class="bg-gray-50">
+    <div id="app" class="max-w-4xl mx-auto min-h-screen pb-20">
+        <header class="p-6 flex justify-between items-center bg-white shadow-sm">
+            <h1 class="text-2xl font-bold text-orange-600">MzansiPulse</h1>
+            <div class="w-10 h-10 bg-gray-200 rounded-full"></div>
+        </header>
+
+        <main class="p-4">
+            <h2 class="text-xl font-semibold mb-4">Unjani, Thandi! 👋</h2>
+
+            <div class="bg-gradient-to-r from-orange-600 to-orange-400 p-8 rounded-3xl text-white text-center shadow-lg mb-8">
+                <p class="text-sm opacity-90 uppercase tracking-wider">EmpowerScore</p>
+                <h3 class="text-5xl font-bold my-2">850</h3>
+                <span class="bg-white/20 px-3 py-1 rounded-full text-xs">TRUST RATING: HIGH</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div @click="openBantu" class="bg-blue-50 p-6 rounded-2xl border border-blue-100 cursor-pointer hover:bg-blue-100 transition">
+                    <div class="text-2xl mb-2">💬</div>
+                    <h4 class="font-bold">Biz-Bantu</h4>
+                    <p class="text-xs text-gray-500">AI Assistant</p>
+                </div>
+                <div class="bg-green-50 p-6 rounded-2xl border border-green-100">
+                    <div class="text-2xl mb-2">🌱</div>
+                    <h4 class="font-bold">Biz-Seed</h4>
+                    <p class="text-xs text-gray-500">Grant Match</p>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-bold mt-8 mb-4">Recent Activity</h3>
+            <div class="space-y-3">
+                <div v-for="item in activity" :key="item.id" class="flex items-center p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                    <div class="text-xl mr-4">📝</div>
+                    <div>
+                        <p class="font-medium text-sm">{{ item.title }}</p>
+                        <p class="text-xs text-gray-400">{{ item.date }}</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <button class="fixed bottom-6 right-6 bg-orange-600 text-white px-6 py-4 rounded-full shadow-2xl flex items-center space-x-2 font-bold hover:scale-105 transition">
+            <span>🎤</span>
+            <span>Record Sales</span>
+        </button>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        createApp({
+            data() {
+                return {
+                    activity: [
+                        { id: 1, title: "3 Receipts Scanned", date: "Today • 14:20" },
+                        { id: 2, title: "Business Plan Updated", date: "Yesterday • 09:15" }
+                    ]
+                }
+            },
+            methods: {
+                openBantu() {
+                    alert("Biz-Bantu AI (Pangu Model) is starting...");
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
