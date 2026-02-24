@@ -1,6 +1,6 @@
 """
 MzansiPulse Authentication API
-Local Flask server for signup/login with SQLite
+Flask server with OBS database integration
 """
 
 from flask import Flask, request, jsonify
@@ -9,22 +9,85 @@ import sqlite3
 import hashlib
 import os
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Import OBS manager (will fail gracefully if not available)
+try:
+    from obs_db_manager import OBSDatabaseManager
+    OBS_AVAILABLE = True
+except ImportError:
+    print("⚠️  obs_db_manager not found - OBS features disabled")
+    OBS_AVAILABLE = False
 
 app = Flask(__name__)
 CORS(app)  # Allow requests from Vue frontend
 
-# Database path
-DB_PATH = os.path.join('..', 'database', 'mzansipulse.db')
+# ============================================================================
+# CONFIGURATION
+# ============================================================================
+
+# Environment-based configuration
+USE_OBS = os.environ.get('USE_OBS', 'false').lower() == 'true'
+
+# OBS credentials (from environment variables for security)
+OBS_AK = os.environ.get('OBS_ACCESS_KEY')
+OBS_SK = os.environ.get('OBS_SECRET_KEY')
+OBS_BUCKET = os.environ.get('OBS_BUCKET_NAME', 'mzansipulse-data')
+
+# Local database path (fallback)
+LOCAL_DB_PATH = os.path.join('..', 'database', 'mzansipulse.db')
+
+# Initialize OBS manager if enabled
+obs_manager = None
+if USE_OBS and OBS_AVAILABLE and OBS_AK and OBS_SK:
+    try:
+        obs_manager = OBSDatabaseManager(
+            access_key_id=OBS_AK,
+            secret_access_key=OBS_SK,
+            bucket_name=OBS_BUCKET
+        )
+        print("✅ OBS database manager initialized")
+    except Exception as e:
+        print(f"⚠️  OBS initialization failed: {e}")
+        print("⚠️  Falling back to local database")
+        obs_manager = None
+else:
+    if USE_OBS:
+        print("⚠️  OBS enabled but credentials missing or module not available")
+    print("ℹ️  Using local database")
 
 # ============================================================================
 # HELPER FUNCTIONS
 # ============================================================================
 
+def get_db_path():
+    """
+    Get database path
+    Uses OBS if configured, otherwise uses local file
+    """
+    if obs_manager:
+        return obs_manager.get_database_path()
+    else:
+        return LOCAL_DB_PATH
+
 def get_db():
     """Get database connection"""
-    conn = sqlite3.connect(DB_PATH)
+    db_path = get_db_path()
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row  # Return rows as dictionaries
     return conn
+
+def sync_to_obs():
+    """Upload database changes to OBS (after write operations)"""
+    if obs_manager:
+        try:
+            obs_manager.upload_to_obs()
+            print("✅ Database synced to OBS")
+        except Exception as e:
+            print(f"⚠️  Failed to sync to OBS: {e}")
 
 def hash_password(password: str) -> str:
     """Hash password using SHA-256"""
@@ -43,7 +106,9 @@ def health_check():
     """Health check endpoint"""
     return jsonify({
         'status': 'healthy',
-        'message': 'MzansiPulse Auth API is running!'
+        'message': 'MzansiPulse Auth API is running!',
+        'database_mode': 'OBS' if obs_manager else 'Local',
+        'database_path': get_db_path()
     })
 
 @app.route('/api/signup', methods=['POST'])
@@ -153,6 +218,9 @@ def signup():
         ''', (business_id, datetime.now().isoformat()))
         
         conn.commit()
+        
+        # Sync to OBS after creating user
+        sync_to_obs()
         
         # Fetch the complete user data
         cursor.execute('''
@@ -264,6 +332,10 @@ def login():
         ''', (datetime.now().isoformat(), user_row['user_id']))
         
         conn.commit()
+        
+        # Sync to OBS after updating last login
+        sync_to_obs()
+        
         conn.close()
         
         # Build response
@@ -352,7 +424,8 @@ if __name__ == '__main__':
     print("=" * 80)
     print("🚀 MzansiPulse Auth API Server Starting...")
     print("=" * 80)
-    print(f"\n📍 Database: {os.path.abspath(DB_PATH)}")
+    print(f"\n📍 Database Mode: {'OBS' if obs_manager else 'Local'}")
+    print(f"📍 Database Path: {os.path.abspath(get_db_path())}")
     print(f"🌐 API URL: http://localhost:5000")
     print(f"📡 Endpoints:")
     print(f"   • GET  /api/health")

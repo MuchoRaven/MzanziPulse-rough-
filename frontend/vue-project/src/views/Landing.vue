@@ -29,7 +29,7 @@ const chooseRole = (role) => {
       </div>
 
       <!-- Role Selection Cards -->
-      <div class="grid md:grid-cols-2 gap-6 lg:gap-8">
+      <div class="grid grid-cols-2 gap-4 lg:gap-8">
         <!-- Business Owner Card -->
         <button
           @click="chooseRole('business')"
@@ -39,11 +39,11 @@ const chooseRole = (role) => {
             <span class="text-4xl">👔</span>
           </div>
           
-          <h2 class="text-2xl lg:text-3xl font-bold text-neutral-900 mb-3">
-            I'm a Business Owner
+          <h2 class="text-lg lg:text-2xl xl:text-3xl font-bold text-neutral-900 mb-2 lg:mb-3">
+           I'm a Business Owner
           </h2>
-          
-          <p class="text-neutral-600 mb-6 leading-relaxed">
+
+          <p class="text-xs lg:text-base text-neutral-600 mb-4 lg:mb-6 leading-relaxed">
             Run a spaza shop, salon, tailor, or any township business? 
             Get your EmpowerScore, track cash, and find grants.
           </p>
@@ -63,11 +63,11 @@ const chooseRole = (role) => {
             <span class="text-4xl">🛒</span>
           </div>
           
-          <h2 class="text-2xl lg:text-3xl font-bold text-neutral-900 mb-3">
+          <h2 class="text-lg lg:text-2xl xl:text-3xl font-bold text-neutral-900 mb-2 lg:mb-3">
             I'm a Customer
           </h2>
-          
-          <p class="text-neutral-600 mb-6 leading-relaxed">
+
+          <p class="text-xs lg:text-base text-neutral-600 mb-4 lg:mb-6 leading-relaxed">
             Support local businesses, discover township shops, and enjoy 
             community-powered shopping experiences.
           </p>

@@ -42,3 +42,7 @@ credentials.csv
 .env
 secrets.json
 access_keys.txtdeployment/
+
+# In your root .gitignore, add:
+scripts/.env
+.env
