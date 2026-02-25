@@ -416,6 +416,105 @@ def get_user(user_id):
             'error': str(e)
         }), 500
 
+# ═══════════════════════════════════════════════════════════════════════════
+# PART 2: BIZ-BANTU CHAT API ENDPOINT
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Import Pangu helper at the top of the file (after other imports)
+from pangu_helper import PanguAIHelper
+
+# Initialize Pangu helper (add after obs_manager initialization)
+PANGU_PROJECT_ID = os.environ.get('PANGU_PROJECT_ID', 'demo-project')
+PANGU_AK = os.environ.get('PANGU_ACCESS_KEY', OBS_AK)  # Can reuse OBS keys
+PANGU_SK = os.environ.get('PANGU_SECRET_KEY', OBS_SK)
+
+pangu_helper = PanguAIHelper(
+    project_id=PANGU_PROJECT_ID,
+    access_key=PANGU_AK,
+    secret_key=PANGU_SK
+)
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    """
+    Biz-Bantu AI Chat Endpoint
+    
+    Expected JSON body:
+    {
+        "message": "How can I get funding?",
+        "userContext": {
+            "userId": 1,
+            "firstName": "Thandi",
+            "businessName": "Mama Thandi's Spaza",
+            "businessType": "SPAZA_SHOP",
+            "location": "Soweto, Gauteng",
+            "empowerScore": 542,
+            "language": "en"
+        },
+        "chatHistory": [
+            {"role": "user", "content": "previous message"},
+            {"role": "assistant", "content": "previous response"}
+        ]
+    }
+    
+    Returns:
+    {
+        "success": true,
+        "response": "AI response text",
+        "suggestions": ["follow up 1", "follow up 2"],
+        "intent": "FUNDING_INQUIRY",
+        "timestamp": "2026-02-24T21:30:00"
+    }
+    """
+    try:
+        data = request.json
+        
+        # Validate required fields
+        if not data.get('message'):
+            return jsonify({
+                'success': False,
+                'error': 'Message is required'
+            }), 400
+        
+        user_message = data['message']
+        user_context = data.get('userContext', {})
+        chat_history = data.get('chatHistory', [])
+        language = user_context.get('language', 'en')
+        
+        print(f"💬 Chat request from: {user_context.get('firstName', 'Unknown')}")
+        print(f"📝 Message: {user_message}")
+        
+        # Get AI response from Pangu
+        ai_response = pangu_helper.get_business_advice(
+            question=user_message,
+            user_context=user_context,
+            language=language
+        )
+        
+        if ai_response['success']:
+            print(f"✅ Response generated (intent: {ai_response['intent']})")
+            
+            return jsonify({
+                'success': True,
+                'response': ai_response['response'],
+                'suggestions': ai_response['suggestions'],
+                'intent': ai_response['intent'],
+                'timestamp': ai_response['timestamp']
+            }), 200
+        else:
+            raise Exception("Failed to generate response")
+        
+    except Exception as e:
+        print(f"❌ Chat error: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': f'Chat error: {str(e)}'
+        }), 500
+
+# ═══════════════════════════════════════════════════════════════════════════
+# END: Chat API Endpoint
+# ═══════════════════════════════════════════════════════════════════════════
+
 # ============================================================================
 # RUN SERVER
 # ============================================================================
@@ -424,14 +523,30 @@ if __name__ == '__main__':
     print("=" * 80)
     print("🚀 MzansiPulse Auth API Server Starting...")
     print("=" * 80)
+    # Upload local database to OBS on startup (if using OBS mode)
+    if obs_manager and os.path.exists(LOCAL_DB_PATH):
+        print("\n🔄 Syncing local database to OBS...")
+        try:
+            obs_manager.obs_client.putFile(
+                bucketName=OBS_BUCKET,
+                objectKey='mzansipulse.db',
+                file_path=LOCAL_DB_PATH
+            )
+            print("✅ Local database synced to OBS")
+        except Exception as e:
+            print(f"⚠️  Sync failed: {e}")
+    
+    print(f"\n📍 Database Mode: {'OBS' if obs_manager else 'Local'}")
     print(f"\n📍 Database Mode: {'OBS' if obs_manager else 'Local'}")
     print(f"📍 Database Path: {os.path.abspath(get_db_path())}")
+    print(f"🤖 Pangu AI: Initialized")
     print(f"🌐 API URL: http://localhost:5000")
     print(f"📡 Endpoints:")
     print(f"   • GET  /api/health")
     print(f"   • POST /api/signup")
     print(f"   • POST /api/login")
     print(f"   • GET  /api/user/<id>")
+    print(f"   • POST /api/chat") 
     print(f"\n✅ Ready to accept requests!\n")
     print("=" * 80)
     
