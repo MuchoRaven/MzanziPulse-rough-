@@ -54,6 +54,12 @@ const router = createRouter({
       name: 'wallet',
       component: () => import('../views/Wallet.vue'),
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/ledger',
+      name: 'ledger',
+      component: () => import('../views/Ledger.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 })

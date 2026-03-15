@@ -2,6 +2,10 @@
 import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from './stores/auth'
+import { useI18n } from 'vue-i18n'
+import LanguageSwitcher from './components/LanguageSwitcher.vue'
+
+const { t } = useI18n()
 
 const router = useRouter()
 const route = useRoute()
@@ -12,12 +16,12 @@ const isBlankLayout = computed(() => {
   return route.meta?.layout === 'blank' || !authStore.isAuthenticated
 })
 
-const navItems = [
-  { name: 'Dashboard', path: '/', icon: '📊', description: 'Overview & Score' },
-  { name: 'Biz-Bantu', path: '/biz-bantu', icon: '🤖', description: 'AI Assistant' },
-  { name: 'Biz-Seed', path: '/biz-seed', icon: '🌱', description: 'Grants & Funding' },
-  { name: 'Wallet', path: '/wallet', icon: '💰', description: 'Cash Tracking' }
-]
+const navItems = computed(() => [
+  { name: t('nav.dashboard'), path: '/', icon: '📊', description: t('nav.overview') },
+  { name: t('nav.bizBantu'), path: '/biz-bantu', icon: '🤖', description: t('nav.aiAssistant') },
+  { name: t('nav.bizSeed'), path: '/biz-seed', icon: '🌱', description: t('nav.grantsFunding') },
+  { name: t('nav.wallet'), path: '/wallet', icon: '💰', description: t('nav.cashTracking') }
+])
 
 const isActive = (path) => route.path === path
 
@@ -114,12 +118,15 @@ const getBusinessName = () => {
               </p>
             </div>
           </div>
+          <div class="flex items-center justify-between mb-2">
+            <LanguageSwitcher />
+          </div>
           <button
             @click="handleLogout"
             class="w-full py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium flex items-center justify-center gap-2"
           >
             <span>🚪</span>
-            <span>Sign Out</span>
+            <span>{{ t('nav.signOut') }}</span>
           </button>
         </div>
       </div>
@@ -135,13 +142,16 @@ const getBusinessName = () => {
           <h1 class="text-lg font-bold text-neutral-900">MzansiPulse</h1>
         </div>
         
-        <button 
-          @click="handleLogout"
-          class="w-8 h-8 bg-success rounded-full flex items-center justify-center text-white text-sm font-bold hover:opacity-80 transition-opacity"
-          title="Sign Out"
-        >
-          {{ getUserInitial() }}
-        </button>
+        <div class="flex items-center gap-2">
+          <LanguageSwitcher />
+          <button
+            @click="handleLogout"
+            class="w-8 h-8 bg-success rounded-full flex items-center justify-center text-white text-sm font-bold hover:opacity-80 transition-opacity"
+            :title="t('nav.signOut')"
+          >
+            {{ getUserInitial() }}
+          </button>
+        </div>
       </div>
     </header>
 

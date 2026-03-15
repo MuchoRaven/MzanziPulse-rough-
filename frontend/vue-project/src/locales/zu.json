@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "dashboard": "Ideshibhodi",
+    "bizBantu": "Biz-Bantu",
+    "bizSeed": "Biz-Seed",
+    "wallet": "Isikhwama",
+    "signOut": "Phuma",
+    "overview": "Ukubuka Jikelele",
+    "aiAssistant": "Umsizi we-AI",
+    "grantsFunding": "Izimpawu Nezimali",
+    "cashTracking": "Ukuqapha Imali"
+  },
+  "dashboard": {
+    "title": "Ideshibhodi",
+    "totalBalance": "Isamba Semali",
+    "cashBalance": "Imali Yomthamo",
+    "digitalBalance": "Imali Yedijithali",
+    "dailySales": "Ukuthengisa Kwansuku Zonke",
+    "monthlyProfit": "Inzuzo Yenyanga Eyodwa",
+    "transactions": "Izintengo",
+    "empowerScore": "I-EmpowerScore",
+    "addTransaction": "Engeza Intengo",
+    "viewAll": "Buka Konke",
+    "quickActions": "Izenzo Ezikhawulezayo",
+    "recentActivity": "Imisebenzi Yamuva",
+    "grantsTitle": "Izimpawu Ofanelekile Ngayo",
+    "seeAll": "Buka Konke",
+    "tipTitle": "Iseluleko Sokuqhakambisa Amanani"
+  },
+  "transactions": {
+    "add": "Engeza Intengo",
+    "type": "Uhlobo Lwentengo",
+    "income": "Imali Engenayo",
+    "expense": "Imali Ephumayo",
+    "amount": "Inani",
+    "description": "Incazelo",
+    "paymentMethod": "Indlela Yokukhokha",
+    "category": "Isigaba",
+    "cash": "Imali Yomthamo",
+    "digital": "Idijithali",
+    "credit": "Isikweletu"
+  },
+  "bizSeed": {
+    "title": "Biz-Seed",
+    "subtitle": "Inkundla Yokulungela Ukutshala Imali",
+    "compliance": "Ukuqhubeka Nokubhalisa",
+    "investorVault": "Indawo Yokugcina Amafayela Abatyali",
+    "funding": "Ukufaneleka Kwezimali Nezimpawu",
+    "market": "Uchungechunge Lokushibhili Nokufinyelela Emakethe"
+  },
+  "language": {
+    "label": "Ulimi",
+    "en": "English",
+    "zu": "isiZulu",
+    "st": "Sesotho",
+    "xh": "isiXhosa"
+  }
+}

@@ -25,15 +25,45 @@ const userInput = ref('')
 const isLoading = ref(false)
 const chatContainer = ref(null)
 
-// User context for personalized responses
+// Language selection
+const selectedLanguage = ref(localStorage.getItem('mzansi_chat_language') || 'en')
+const showLanguageSelector = ref(false)
+
+const languages = [
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'zu', name: 'isiZulu', flag: '🇿🇦' },
+  { code: 'st', name: 'Sesotho', flag: '🇿🇦' },
+  { code: 'xh', name: 'isiXhosa', flag: '🇿🇦' }
+]
+
+const setLanguage = (langCode) => {
+  selectedLanguage.value = langCode
+  localStorage.setItem('mzansi_chat_language', langCode)
+  showLanguageSelector.value = false
+  
+  // Show language change confirmation
+  const confirmMsg = {
+    'en': 'Language changed to English',
+    'zu': 'Ulimi luguqulwe lwaba isiZulu',
+    'st': 'Puo e fetotse ho Sesotho',
+    'xh': 'Ulwimi lutshintshwe lwaba isiXhosa'
+  }
+  
+  // Could add a toast notification here
+  console.log(confirmMsg[langCode])
+}
+
+// Update userContext to include selected language
 const userContext = computed(() => ({
   userId: authStore.user?.id,
   firstName: authStore.user?.firstName,
+  lastName: authStore.user?.lastName,
+  businessId: authStore.user?.businessId,
   businessName: authStore.user?.businessName,
   businessType: authStore.user?.businessType,
   location: authStore.user?.location,
-  empowerScore: 542, // TODO: Fetch from API
-  language: 'en' // TODO: Get from user preferences
+  empowerScore: 542,
+  language: selectedLanguage.value  // ✅ NOW PERSISTENT!
 }))
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -171,7 +201,7 @@ I'm here to help you grow ${userContext.value.businessName || 'your business'}. 
 const clearChat = () => {
   if (confirm('Clear chat history? This cannot be undone.')) {
     messages.value = []
-    localStorage.removeItem('mzansi_chat_history')
+    localStorage.removeItem(chatKey())
     sendWelcomeMessage()
   }
 }
@@ -195,9 +225,11 @@ const scrollToBottom = () => {
   }
 }
 
+const chatKey = () => `mzansi_chat_history_${authStore.user?.id}`
+
 const saveChatHistory = () => {
   try {
-    localStorage.setItem('mzansi_chat_history', JSON.stringify(messages.value))
+    localStorage.setItem(chatKey(), JSON.stringify(messages.value))
   } catch (e) {
     console.error('Failed to save chat history:', e)
   }
@@ -205,7 +237,7 @@ const saveChatHistory = () => {
 
 const loadChatHistory = () => {
   try {
-    const saved = localStorage.getItem('mzansi_chat_history')
+    const saved = localStorage.getItem(chatKey())
     if (saved) {
       messages.value = JSON.parse(saved)
     }
@@ -232,11 +264,10 @@ const sendQuickAction = (action) => {
   <!-- ═══════════════════════════════════════════════════════════════════
        MAIN CHAT CONTAINER
        ═══════════════════════════════════════════════════════════════════ -->
+  
   <div class="flex flex-col h-[calc(100vh-8rem)] lg:h-[calc(100vh-4rem)] bg-neutral-50">
     
-    <!-- ═══════════════════════════════════════════════════════════════
-         CHAT HEADER
-         ═══════════════════════════════════════════════════════════════ -->
+    <!-- CHAT HEADER - Add language selector -->
     <div class="bg-gradient-to-r from-success to-success-dark text-white px-4 py-4 shadow-lg">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -249,13 +280,51 @@ const sendQuickAction = (action) => {
           </div>
         </div>
         
-        <button 
-          @click="clearChat"
-          class="p-2 hover:bg-white/10 rounded-lg transition-colors"
-          title="Clear chat"
-        >
-          <span class="text-xl">🗑️</span>
-        </button>
+        <div class="flex items-center gap-2">
+          <!-- Language Selector Button -->
+          <button 
+            @click="showLanguageSelector = !showLanguageSelector"
+            class="p-2 hover:bg-white/10 rounded-lg transition-colors relative"
+            title="Change Language"
+          >
+            <span class="text-xl">🌍</span>
+            
+            <!-- Language Dropdown -->
+            <div 
+              v-if="showLanguageSelector"
+              class="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50 min-w-[160px]"
+              @click.stop
+            >
+              <button
+                v-for="lang in languages"
+                :key="lang.code"
+                @click="setLanguage(lang.code)"
+                :class="[
+                  'w-full px-4 py-2 text-left hover:bg-neutral-100 transition-colors flex items-center gap-2',
+                  selectedLanguage === lang.code ? 'bg-success/10 text-success' : 'text-neutral-700'
+                ]"
+              >
+                <span class="text-lg">{{ lang.flag }}</span>
+                <span class="text-sm font-medium">{{ lang.name }}</span>
+                <span v-if="selectedLanguage === lang.code" class="ml-auto text-success">✓</span>
+              </button>
+            </div>
+          </button>
+          
+          <!-- Clear Chat Button -->
+          <button 
+            @click="clearChat"
+            class="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            title="Clear chat"
+          >
+            <span class="text-xl">🗑️</span>
+          </button>
+        </div>
+      </div>
+
+    <!-- Current Language Indicator -->
+      <div class="mt-2 text-xs text-green-100">
+        Language: {{ languages.find(l => l.code === selectedLanguage)?.name }};
       </div>
     </div>
 

@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "bizBantu": "Biz-Bantu",
+    "bizSeed": "Biz-Seed",
+    "wallet": "Wallet",
+    "signOut": "Sign Out",
+    "overview": "Overview & Score",
+    "aiAssistant": "AI Assistant",
+    "grantsFunding": "Grants & Funding",
+    "cashTracking": "Cash Tracking"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalBalance": "Total Balance",
+    "cashBalance": "Cash",
+    "digitalBalance": "Digital",
+    "dailySales": "Daily Sales",
+    "monthlyProfit": "30-Day Profit",
+    "transactions": "Transactions",
+    "empowerScore": "EmpowerScore",
+    "addTransaction": "Add Transaction",
+    "viewAll": "View All",
+    "quickActions": "Quick Actions",
+    "recentActivity": "Recent Activity",
+    "grantsTitle": "Grants You Qualify For",
+    "seeAll": "See All",
+    "tipTitle": "Tip to Boost Your Score"
+  },
+  "transactions": {
+    "add": "Add Transaction",
+    "type": "Transaction Type",
+    "income": "Income",
+    "expense": "Expense",
+    "amount": "Amount",
+    "description": "Description",
+    "paymentMethod": "Payment Method",
+    "category": "Category",
+    "cash": "Cash",
+    "digital": "Digital",
+    "credit": "Credit"
+  },
+  "bizSeed": {
+    "title": "Biz-Seed",
+    "subtitle": "Investment Readiness Platform",
+    "compliance": "Compliance & Formalization",
+    "investorVault": "Investor-Ready Vault",
+    "funding": "Funding & Grant Matching",
+    "market": "Supply Chain & Market Access"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "zu": "isiZulu",
+    "st": "Sesotho",
+    "xh": "isiXhosa"
+  }
+}

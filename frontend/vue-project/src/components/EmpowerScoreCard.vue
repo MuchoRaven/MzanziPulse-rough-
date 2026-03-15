@@ -13,11 +13,14 @@ const progressPercentage = computed(() => (props.score / 1000) * 100)
 
 const tierConfig = computed(() => {
   const configs = {
-    'STARTER': { emoji: '🌱', color: 'text-accent' },
-    'BUILDER': { emoji: '📈', color: 'text-primary' },
-    'PRIME': { emoji: '⭐', color: 'text-success' }
+    'DEVELOPING': { emoji: '🌱', color: 'text-neutral-400' },
+    'STARTER':    { emoji: '🚀', color: 'text-accent' },
+    'BUILDER':    { emoji: '📈', color: 'text-primary' },
+    'GOOD':       { emoji: '💪', color: 'text-primary' },
+    'EXCELLENT':  { emoji: '🏆', color: 'text-success' },
+    'PRIME':      { emoji: '⭐', color: 'text-success' }
   }
-  return configs[props.tier] || configs['STARTER']
+  return configs[props.tier] || configs['DEVELOPING']
 })
 </script>
 
@@ -49,7 +52,14 @@ const tierConfig = computed(() => {
               <h2 class="text-2xl lg:text-3xl font-bold">{{ tier }} Tier</h2>
             </div>
             <p class="text-sm opacity-80">
-              {{ tier === 'PRIME' ? 'Excellent credit!' : tier === 'BUILDER' ? 'Growing steadily' : 'Building foundation' }}
+              {{
+                tier === 'PRIME'      ? 'Excellent credit!' :
+                tier === 'EXCELLENT'  ? 'Strong performance!' :
+                tier === 'GOOD'       ? 'Good standing' :
+                tier === 'BUILDER'    ? 'Growing steadily' :
+                tier === 'STARTER'    ? 'Getting started' :
+                                        'Building foundation'
+              }}
             </p>
           </div>
         </div>

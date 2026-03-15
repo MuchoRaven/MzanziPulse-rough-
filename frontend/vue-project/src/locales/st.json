@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "dashboard": "Letlapa",
+    "bizBantu": "Biz-Bantu",
+    "bizSeed": "Biz-Seed",
+    "wallet": "Mokotla",
+    "signOut": "Tsoa",
+    "overview": "Boholo ba Pale",
+    "aiAssistant": "Motlatsi oa AI",
+    "grantsFunding": "Liphihlelo le Chelete",
+    "cashTracking": "Ho Latela Tjhelete"
+  },
+  "dashboard": {
+    "title": "Letlapa",
+    "totalBalance": "Palomoka ea Tjhelete",
+    "cashBalance": "Tjhelete ea Mokotla",
+    "digitalBalance": "Tjhelete ea Dijithale",
+    "dailySales": "Thekiso ea Letsatsi",
+    "monthlyProfit": "Phaello ea Kgwedi",
+    "transactions": "Ditherisekshene",
+    "empowerScore": "EmpowerScore",
+    "addTransaction": "Eketsa Therisekshene",
+    "viewAll": "Bona Tsohle",
+    "quickActions": "Liketso tse Potlakileng",
+    "recentActivity": "Mesebetsi ea Morao Tjena",
+    "grantsTitle": "Liphihlelo tseo U Lokelang",
+    "seeAll": "Bona Tsohle",
+    "tipTitle": "Keletso ea ho Ntlafatsa Manane"
+  },
+  "transactions": {
+    "add": "Eketsa Therisekshene",
+    "type": "Mofuta oa Therisekshene",
+    "income": "Tjhelete e Kenang",
+    "expense": "Tjhelete e Tsoang",
+    "amount": "Palo",
+    "description": "Tlhaloso",
+    "paymentMethod": "Mokhoa oa ho Lefa",
+    "category": "Sehlopha",
+    "cash": "Tjhelete ea Mokotla",
+    "digital": "Dijithale",
+    "credit": "Kadimo"
+  },
+  "bizSeed": {
+    "title": "Biz-Seed",
+    "subtitle": "Sethala sa ho Itokisetsa Matsete",
+    "compliance": "Tumellano le Ngodiso",
+    "investorVault": "Polokelo ea Litokomane tsa Matsete",
+    "funding": "Ho Tšoaellana le Liphihlelo le Chelete",
+    "market": "Setiha sa Phepelo le Phihlello ea Mmaraka"
+  },
+  "language": {
+    "label": "Puo",
+    "en": "English",
+    "zu": "isiZulu",
+    "st": "Sesotho",
+    "xh": "isiXhosa"
+  }
+}
