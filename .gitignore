@@ -1,4 +1,4 @@
-# Database files (don't upload - too large and has test data)
+# Database files
 *.db
 *.sqlite
 *.sqlite3
@@ -29,20 +29,30 @@ Thumbs.db
 # Logs
 *.log
 
-# Secrets (if we add API keys later)
+# Secrets & credentials
 .env
-secrets.json
-
-# Huawei Cloud credentials
-credentials.json
-config.ini*.db
-
-credentials.csv
-*.csv
-.env
-secrets.json
-access_keys.txtdeployment/
-
-# In your root .gitignore, add:
 scripts/.env
-.env
+secrets.json
+credentials.json
+credentials.csv
+access_keys.txt
+config.ini
+
+# Node
+node_modules/
+package-lock.json
+
+# Build output
+dist/
+build/
+
+# Misc / generated
+.claude/
+bash.exe.stackdump
+clean_package/
+downloads/
+package.zip
+package-lock.json
+pillow_dep/
+*.csv
+deployment/
