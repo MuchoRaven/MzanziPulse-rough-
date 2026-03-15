@@ -3,31 +3,28 @@ MzansiPulse Grant Matching System
 Automatically matches businesses to eligible grants based on EmpowerScore
 """
 
-import sqlite3
-import os
 import json
 from typing import List, Dict
-
-DB_PATH = os.path.join('..', 'database', 'mzansipulse.db')
+from db import get_db
 
 
 class GrantMatcher:
     """Matches businesses to grant opportunities"""
-    
-    def __init__(self, db_path: str = DB_PATH):
-        self.db_path = db_path
-    
+
+    def __init__(self):
+        pass
+
     def find_matches(self, business_id: int) -> List[Dict]:
         """
         Find all grants this business is eligible for
-        
+
         Args:
             business_id: ID of business to match
-        
+
         Returns:
             List of grant matches with scores
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = get_db()
         cursor = conn.cursor()
         
         # Get business details
@@ -36,18 +33,23 @@ class GrantMatcher:
                    cl.empower_score, cl.score_tier
             FROM businesses b
             LEFT JOIN credit_logs cl ON b.business_id = cl.business_id
-            WHERE b.business_id = ?
+            WHERE b.business_id = %s
             ORDER BY cl.created_at DESC
             LIMIT 1
         ''', (business_id,))
-        
+
         business_data = cursor.fetchone()
-        
+
         if not business_data:
             conn.close()
             return []
-        
-        business_name, province, township, biz_type, score, tier = business_data
+
+        business_name = business_data['business_name']
+        province      = business_data['province']
+        township      = business_data['township']
+        biz_type      = business_data['business_type']
+        score         = business_data['empower_score']
+        tier          = business_data['score_tier']
         
         # Get all active grants
         cursor.execute('''
@@ -61,7 +63,13 @@ class GrantMatcher:
         matches = []
         
         for grant in grants:
-            grant_id, name, provider, g_type, criteria_json, amount, url = grant
+            grant_id      = grant['grant_id']
+            name          = grant['grant_name']
+            provider      = grant['provider']
+            g_type        = grant['grant_type']
+            criteria_json = grant['eligibility_criteria']
+            amount        = grant['amount_range']
+            url           = grant['application_url']
             
             # Parse eligibility criteria
             try:
@@ -134,7 +142,7 @@ class GrantMatcher:
     
     def save_matches(self, business_id: int, matches: List[Dict]) -> int:
         """Save grant matches to database"""
-        conn = sqlite3.connect(self.db_path)
+        conn = get_db()
         cursor = conn.cursor()
         
         saved_count = 0
@@ -143,18 +151,18 @@ class GrantMatcher:
             # Check if match already exists
             cursor.execute('''
                 SELECT match_id FROM grant_matches
-                WHERE business_id = ? AND grant_id = ?
+                WHERE business_id = %s AND grant_id = %s
             ''', (business_id, match['grant_id']))
-            
+
             existing = cursor.fetchone()
-            
+
             if not existing:
                 # Insert new match
                 cursor.execute('''
                     INSERT INTO grant_matches (
                         business_id, grant_id, match_score, match_reasons,
                         application_status
-                    ) VALUES (?, ?, ?, ?, ?)
+                    ) VALUES (%s, %s, %s, %s, %s)
                 ''', (
                     business_id,
                     match['grant_id'],
