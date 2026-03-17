@@ -252,6 +252,7 @@
 </template>
 
 <script setup>
+import API_BASE from '@/config/api'
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import ComplianceTracker from '../components/bizseed/ComplianceTracker.vue'
@@ -291,7 +292,7 @@ const togglePillar = (pillar) => {
 
 const fetchDashboard = async () => {
   try {
-    const response = await fetch(`http://localhost:5000/api/bizseed/dashboard/${authStore.user.id}`)
+    const response = await fetch(`${API_BASE}/api/bizseed/dashboard/${authStore.user.id}`)
     const data = await response.json()
     
     if (data.success) {

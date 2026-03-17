@@ -121,6 +121,7 @@
 </template>
 
 <script setup>
+import API_BASE from '@/config/api'
 import { ref, onMounted } from 'vue'
 
 const props = defineProps({
@@ -157,7 +158,7 @@ const compliance = ref({
 const fetchCompliance = async () => {
   loading.value = true
   try {
-    const response = await fetch(`http://localhost:5000/api/bizseed/compliance/status/${props.userId}`)
+    const response = await fetch(`${API_BASE}/api/bizseed/compliance/status/${props.userId}`)
     const data = await response.json()
     
     if (data.success) {

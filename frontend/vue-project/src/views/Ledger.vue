@@ -498,6 +498,7 @@
 </template>
 
 <script setup>
+import API_BASE from '@/config/api'
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { useLedgerExport } from '../composables/useLedgerExport'
@@ -719,7 +720,7 @@ const fetchLedger = async () => {
     if (filters.value.type)          params.set('type',           filters.value.type)
     if (filters.value.search)        params.set('search',         filters.value.search)
 
-    const res  = await fetch(`http://localhost:5000/api/ledger/${authStore.user.id}?${params}`)
+    const res  = await fetch(`${API_BASE}/api/ledger/${authStore.user.id}?${params}`)
     const data = await res.json()
 
     if (data.success) {

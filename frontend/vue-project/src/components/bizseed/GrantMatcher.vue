@@ -187,6 +187,7 @@
 </template>
 
 <script setup>
+import API_BASE from '@/config/api'
 import { ref, computed, onMounted } from 'vue'
 
 const props = defineProps({ userId: Number })
@@ -207,7 +208,7 @@ const grantTotal = computed(() =>
 const fetchGrants = async () => {
   loading.value = true
   try {
-    const res  = await fetch(`http://localhost:5000/api/bizseed/grants/matches/${props.userId}`)
+    const res  = await fetch(`${API_BASE}/api/bizseed/grants/matches/${props.userId}`)
     const data = await res.json()
     if (data.success) {
       grants.value  = data.grants

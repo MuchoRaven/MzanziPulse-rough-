@@ -10,6 +10,7 @@
      ═══════════════════════════════════════════════════════════════════════ -->
 
 <script setup>
+import API_BASE from '@/config/api'
 import { ref, computed, nextTick, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import ChatMessage from '../components/ChatMessage.vue'
@@ -111,7 +112,7 @@ const sendMessage = async () => {
   
   try {
     // Call backend API
-    const response = await fetch('http://localhost:5000/api/chat', {
+    const response = await fetch('${API_BASE}/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

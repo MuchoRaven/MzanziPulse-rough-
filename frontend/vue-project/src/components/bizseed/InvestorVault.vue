@@ -199,6 +199,7 @@
 </template>
 
 <script setup>
+import API_BASE from '@/config/api'
 import { ref, onMounted } from 'vue'
 
 const props = defineProps({
@@ -239,7 +240,7 @@ const vault = ref({
 const fetchVault = async () => {
   loading.value = true
   try {
-    const response = await fetch(`http://localhost:5000/api/bizseed/vault/documents/${props.userId}`)
+    const response = await fetch(`${API_BASE}/api/bizseed/vault/documents/${props.userId}`)
     const data = await response.json()
     
     if (data.success) {
@@ -256,7 +257,7 @@ const fetchVault = async () => {
 const generatePitchDeck = async () => {
   generatingPitchDeck.value = true
   try {
-    const response = await fetch('http://localhost:5000/api/bizseed/vault/generate/pitch-deck', {
+    const response = await fetch('${API_BASE}/api/bizseed/vault/generate/pitch-deck', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: props.userId })
@@ -283,7 +284,7 @@ const generatePitchDeck = async () => {
 const generateFinancials = async () => {
   generatingFinancials.value = true
   try {
-    const response = await fetch('http://localhost:5000/api/bizseed/vault/generate/financials', {
+    const response = await fetch('${API_BASE}/api/bizseed/vault/generate/financials', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: props.userId })
@@ -310,7 +311,7 @@ const generateFinancials = async () => {
 const generateBusinessPlan = async () => {
   generatingBusinessPlan.value = true
   try {
-    const response = await fetch('http://localhost:5000/api/bizseed/vault/generate/business-plan', {
+    const response = await fetch('${API_BASE}/api/bizseed/vault/generate/business-plan', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: props.userId })
@@ -337,7 +338,7 @@ const generateBusinessPlan = async () => {
 const generateForecast = async () => {
   generatingForecast.value = true
   try {
-    const response = await fetch('http://localhost:5000/api/bizseed/vault/generate/forecast', {
+    const response = await fetch('${API_BASE}/api/bizseed/vault/generate/forecast', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: props.userId })
@@ -375,7 +376,7 @@ const downloadDocument = (documentType) => {
     return
   }
 
-  const url = `http://localhost:5000/api/bizseed/downloads/${filename}`
+  const url = `${API_BASE}/api/bizseed/downloads/${filename}`
   window.open(url, '_blank')
 }
 

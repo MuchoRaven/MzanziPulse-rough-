@@ -329,6 +329,7 @@
 </template>
 
 <script setup>
+import API_BASE from '@/config/api'
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../../stores/auth'
 
@@ -344,7 +345,7 @@ const fetchAnalysis = async () => {
   loading.value = true
   error.value   = null
   try {
-    const res  = await fetch(`http://localhost:5000/api/bizseed/market/analysis/${props.userId}`)
+    const res  = await fetch(`${API_BASE}/api/bizseed/market/analysis/${props.userId}`)
     const json = await res.json()
     if (json.success) {
       data.value = json

@@ -155,6 +155,7 @@
 </template>
 
 <script setup>
+import API_BASE from '@/config/api'
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { useI18n } from 'vue-i18n'
@@ -184,7 +185,7 @@ const empowerBreakdown = ref({})
 
 const fetchDashboardData = async () => {
   try {
-    const response = await fetch(`http://localhost:5000/api/dashboard/${authStore.user?.id}`)
+    const response = await fetch(`${API_BASE}/api/dashboard/${authStore.user?.id}`)
     const data = await response.json()
 
     if (data.success) {
@@ -286,7 +287,7 @@ const eligibleGrants = ref([])
 
 const fetchEligibleGrants = async () => {
   try {
-    const res  = await fetch(`http://localhost:5000/api/bizseed/grants/matches/${authStore.user?.id}`)
+    const res  = await fetch(`${API_BASE}/api/bizseed/grants/matches/${authStore.user?.id}`)
     const data = await res.json()
     if (data.success) {
       // Only show grants the user actually qualifies for, top 3 by match %

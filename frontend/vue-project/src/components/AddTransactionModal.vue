@@ -154,6 +154,7 @@
 </template>
 
 <script setup>
+import API_BASE from '@/config/api'
 import { ref, computed } from 'vue'
 import { useAuthStore } from '../stores/auth'
 
@@ -205,7 +206,7 @@ const handleCameraClick = () => {
       formData.append('image', file)
       formData.append('userId', authStore.user.id)
 
-      const response = await fetch('http://localhost:5000/api/transactions/ocr', {
+      const response = await fetch('${API_BASE}/api/transactions/ocr', {
         method: 'POST',
         body: formData
       })
@@ -263,7 +264,7 @@ const submitTransaction = async () => {
   loading.value = true
 
   try {
-    const response = await fetch('http://localhost:5000/api/transactions', {
+    const response = await fetch('${API_BASE}/api/transactions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

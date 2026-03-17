@@ -121,6 +121,7 @@
 </template>
 
 <script setup>
+import API_BASE from '@/config/api'
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 
@@ -142,7 +143,7 @@ const fetchTransactions = async () => {
   loading.value = true
   try {
     const response = await fetch(
-      `http://localhost:5000/api/transactions?userId=${authStore.user.id}&limit=50`
+      `${API_BASE}/api/transactions?userId=${authStore.user.id}&limit=50`
     )
     const data = await response.json()
     if (data.success) {

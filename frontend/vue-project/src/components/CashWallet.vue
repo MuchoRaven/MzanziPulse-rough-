@@ -447,7 +447,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 
 const authStore = useAuthStore()
-const API = 'http://localhost:5000'
+import API_BASE from '@/config/api'
+const API = API_BASE
 
 // ── State ─────────────────────────────────────────────────────
 const balance        = ref({})
