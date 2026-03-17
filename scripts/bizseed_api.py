@@ -130,7 +130,7 @@ def get_vault_documents(user_id):
             LEFT JOIN cash_wallets cw ON b.business_id = cw.business_id
             LEFT JOIN cash_transactions ct ON cw.wallet_id = ct.wallet_id
             WHERE b.user_id = %s
-            GROUP BY b.business_id
+            GROUP BY b.business_id, b.business_name, b.business_type
         ''', (user_id,))
         
         business_data = cursor.fetchone()
@@ -235,7 +235,8 @@ def generate_pitch_deck():
             LEFT JOIN cash_wallets cw ON b.business_id = cw.business_id
             LEFT JOIN cash_transactions ct ON cw.wallet_id = ct.wallet_id
             WHERE b.user_id = %s
-            GROUP BY b.business_id
+            GROUP BY b.business_id, b.business_name, b.business_type,
+                     b.township, b.province, u.user_id, u.first_name, u.last_name
         ''', (user_id,))
 
         business = cursor.fetchone()
