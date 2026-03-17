@@ -112,7 +112,7 @@ const sendMessage = async () => {
   
   try {
     // Call backend API
-    const response = await fetch('${API_BASE}/api/chat', {
+    const response = await fetch(`${API_BASE}/api/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
