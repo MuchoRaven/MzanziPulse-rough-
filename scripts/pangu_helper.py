@@ -1186,8 +1186,8 @@ class PanguAIHelper:
             dict: AI response with suggestions
         """
         
-        USE_REAL_AI = os.environ.get('USE_REAL_AI', 'false').lower() == 'true'
-        
+        USE_REAL_AI = os.environ.get('USE_REAL_AI', 'true').lower() == 'true'
+
         if USE_REAL_AI:
             # Use OpenRouter AI (REAL INTELLIGENT RESPONSES)
             print("🤖 Using OpenRouter AI")
